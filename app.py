@@ -10,3 +10,8 @@ def main():
     # load initial page
     if flask.request.method == 'GET':
         return(flask.render_template('main_page.html'))
+
+
+
+if __name__ == '__main__':
+    app.run()
