@@ -3,10 +3,19 @@
   <head>
     	<meta charset="utf-8">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <title>My Web App</title>
+    <title>NFL Game Predictor</title>
   </head>
   <body>
       <h1> Hello World  </h1>
       <h1>Welcome to NFL Sports Predictor</h1>
+
+      <div class= "games">
+        {% for index, row in games.iterrows()%}
+          <div class="game">
+            <p>{{row.AwayTeam}}</p>
+            <p>{{row.HomeTeam}}</p>
+          </div>
+        {%endfor%} 
+      </div>
   </body>
 </html>
