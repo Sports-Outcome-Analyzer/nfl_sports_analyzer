@@ -1,0 +1,26 @@
+Who did you create the project with?
+How many people were on the team?
+What was your specific role?
+What problem were you trying to solve?
+What does your project do? 
+What functions are you particularly proud of?
+How can your project benefit others?
+What makes your project different from other products? 
+What was your design strategy and what technologies did you use?
+How did you tackle your challenges/work as a team?
+What are the next steps your team would like to take to improve the project
+
+
+
+Script
+----------------------------------------------------------
+This project was developed by me and Tashi.
+The problem we are trying to solve is inaccurate predictions from all media outlets regarding a given weeks NFL games. Many people use these analyst predictions to place bets,
+make fantasy football decisions, etc. If we are able to create a predective model that can use up to date statistics to predict a winner of a particular game, it could impact a fans 
+decision regarding the game. If you are putting money on a team, you want to know you have made the right decision. Sports betting is a $150 billion dollar industry, you 
+don't want to be the one losing.
+Our project is a web-based application that allows users to log on and see the given weeks slate of NFL games with its corresponding predection. It will also show past 
+weeks/seasons predictions and actual outcomes. This will allow the user to look back at past matchups to see if we got the prediction right.
+Our project will give users another source of information/predictions to base their personal final prediction off of. There's never enough data available when making picks
+in sports.
+
