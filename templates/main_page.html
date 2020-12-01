@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,13 +10,39 @@
       <h1> Hello World  </h1>
       <h1>Welcome to NFL Sports Predictor</h1>
 
+     <form action="{{ url_for('main') }}" method="POST">
+	    <fieldset>
+	        <legend>Filters</legend>
+	        Week:
+	        <input name="week_user_selected" type="number" required>
+	        <input type="submit" value="Submit">
+	    </fieldset>
+	</form>
+
+      <hr>
+      <div>
+          {% if selected_week: %}
+            <p> Filtered on Week = {{selected_week}} </p>
+          {%endif%}
+     </div>
+      <hr>
       <div class= "games">
-        {% for index, row in games.iterrows()%}
-          <div class="game">
-            <p>{{row.AwayTeam}}</p>
-            <p>{{row.HomeTeam}}</p>
-          </div>
-        {%endfor%} 
+        <table style = "width:30%">
+            <tr>
+                <th> Season </th>
+                <th> Week </th>
+                <th> Home Team </th>
+                <th> Away Team </th>
+            </tr>
+            {% for index, row in games.iterrows()%}
+                <tr>
+                    <td> {{row.Season}}</td>
+                    <td> {{row.Week}}</td>
+                    <td> {{row.HomeTeam}}</td>
+                    <td> {{row.AwayTeam}}</td>
+                </tr>
+            {% endfor %}
+        </table>
       </div>
   </body>
 </html>
