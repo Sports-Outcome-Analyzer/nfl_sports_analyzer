@@ -31,13 +31,21 @@ def main():
 
     if flask.request.method == 'POST':
         selected_week = flask.request.form['week_user_selected']
+        selected_year = flask.request.form['year_user_selected2']
+        year_api_dict = {'2017': 'a',
+                         '2018': 'b',
+                         '2019': 'c',
+                         '2020': 'https://api.sportsdata.io/v3/nfl/scores/json/ScoresByWeek/2020REG/{0}?key=d8b5ea01537141eb9a320f95994b7109'}
+        api_call = year_api_dict[selected_year]
+
         response = requests.get(
-            'https://api.sportsdata.io/v3/nfl/scores/json/ScoresByWeek/2020REG/{0}?key=d8b5ea01537141eb9a320f95994b7109'.format(
+            api_call.format(
                 selected_week))
         df = pd.DataFrame.from_dict(response.json())
         return flask.render_template('main_page.html',
                                      games=df,
-                                     selected_week=selected_week)
+                                     selected_week=selected_week,
+                                     selected_year=selected_year)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,13 @@
 	        <legend>Filters</legend>
 	        Week:
 	        <input name="week_user_selected" type="number" required>
+             Year:
+            <select name="year_user_selected2" id="cars">
+              <option value="2017">2017 (Earliest Year)</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020 (Latest Year)</option>
+            </select>
 	        <input type="submit" value="Submit">
 	    </fieldset>
 	</form>
@@ -23,6 +30,9 @@
       <div>
           {% if selected_week: %}
             <p> Filtered on Week = {{selected_week}} </p>
+          {%endif%}
+          {% if selected_year: %}
+            <p> Filtered on Year = {{selected_year}} </p>
           {%endif%}
      </div>
       <hr>
