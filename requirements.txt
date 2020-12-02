@@ -3,4 +3,3 @@ gunicorn
 requests
 pandas
 psycopg2
-pickle
