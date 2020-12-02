@@ -10,19 +10,18 @@
       <h1> Hello World  </h1>
       <h1>Welcome to NFL Sports Predictor</h1>
 
-     <form action="{{ url_for('main') }}" method="POST">
+     <form action="{{ url_for(function) }}" method="POST">
 	    <fieldset>
 	        <legend>Filters</legend>
-	        Week:
-	        <input name="week_user_selected" type="number" required>
-             Year:
-            <select name="year_user_selected2" id="cars">
-              <option value="2017">2017 (Earliest Year)</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
-              <option value="2020">2020 (Latest Year)</option>
-            </select>
-	        <input type="submit" value="Submit">
+          Week:
+          {% if year == 2020: %}
+          <input name="week_user_selected" min=1 max={{ week }} type="number" required>
+          {% elif year == 2017: %}
+          <input name="week_user_selected" min=2 max=17 type="number" required>
+          {% else: %}
+          <input name="week_user_selected" min=1 max=17 type="number" required>
+          {%endif%}
+          <input type="submit" value="Submit">
 	    </fieldset>
 	</form>
 
@@ -31,25 +30,32 @@
           {% if selected_week: %}
             <p> Filtered on Week = {{selected_week}} </p>
           {%endif%}
-          {% if selected_year: %}
-            <p> Filtered on Year = {{selected_year}} </p>
-          {%endif%}
      </div>
       <hr>
       <div class= "games">
         <table style = "width:30%">
             <tr>
-                <th> Season </th>
                 <th> Week </th>
                 <th> Home Team </th>
                 <th> Away Team </th>
+                <th> Model Predicted Winner </th>
+                <th> Actual Winner </th>
             </tr>
-            {% for index, row in games.iterrows()%}
+            {% for row in games.itertuples(index=True, name='Pandas'):%}
                 <tr>
-                    <td> {{row.Season}}</td>
                     <td> {{row.Week}}</td>
                     <td> {{row.HomeTeam}}</td>
                     <td> {{row.AwayTeam}}</td>
+                    {% if row.PredictHomeTeamWin == 1: %}
+                      <td>{{row.HomeTeam}}</td>
+                    {% else: %}
+                      <td>{{row.AwayTeam}}</td>
+                    {%endif%}
+                    {% if row.HomeResult == 1: %}
+                      <td>{{row.HomeTeam}}</td>
+                    {% else: %}
+                      <td>{{row.AwayTeam}}</td>
+                    {%endif%}
                 </tr>
             {% endfor %}
         </table>
