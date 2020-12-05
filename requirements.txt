@@ -1,0 +1,6 @@
+flask
+gunicorn
+requests
+pandas
+psycopg2
+sklearn

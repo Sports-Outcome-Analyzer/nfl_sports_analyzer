@@ -1,0 +1,60 @@
+Who did you create the project with?
+How many people were on the team?
+What was your specific role?
+What problem were you trying to solve?
+What does your project do? 
+What functions are you particularly proud of?
+How can your project benefit others?
+What makes your project different from other products? 
+What was your design strategy and what technologies did you use?
+How did you tackle your challenges/work as a team?
+What are the next steps your team would like to take to improve the project
+
+
+
+Script
+----------------------------------------------------------
+Good evening everybody, It is a great pleasure to be able to present this project for all of you in attendance.
+Tonight we will be demoing NFL Oracle, a NFL game out come predictor.
+
+This was developed by me (Dennis Krupitsky) and Tashi T Gurung, we are both seniors who are graduating at the end of this semester.
+We both served as developers for this project.
+
+The problem we are trying to solve is inaccurate predictions from all media outlets regarding a given weeks NFL games. Many people use these analyst predictions to place bets,
+make fantasy football decisions, etc. The goal is to utilize data science to create a predictive model that can use up to date statistics for an NFL game to predict a winner 
+of a weeks matchups, and even a potential playoff matchup.
+
+Our project allows users to log on to a simple to use platform that displays the current NFL weeks matchups and give its prediction for each game. Additionally, users are
+able to go back and observe past years to see how accurate the model has been, as you will see the models prediction and the actual outcome. Another feature is the ability
+to select a so called "fantasy matchup" or a matchup you think could occur in the playoffs. When you select two teams, our model will use up to date statstics to predict
+who would win that matchup.
+
+The functions we are particularly proud of is the ability to select a matchup that is not currently slated in the NFL and see what that potential outcome could be. It
+can put a rest to the constant warring between diehard fans about who's team is better. We are also quite proud of the ability to view predictions of a current weeks games. 
+
+
+I believe this project will benefit all sports fans, from casual fans to diehard fans. Whether you're making non-risk bets with friends, or putting big money at stake,
+you want to make the correct choice. If you are putting the one putting money on a team, you want to know you have made the right decision. 
+Sports betting is a $150 billion dollar industry, you don't want to be the one losing. 
+It is never a bad thing to have too many data sources/other opinions about a decision. 
+
+This project is a web app developed using the flask framework that connects to postgres database for weekly team data, and utilizes a machine learning model
+to make predictions. Our design approach started with data collection/ data engineering. The data source we had relied on did not have exactly the kind of data fields
+we needed (especially for games in years past), so we spent quite some time constructing custom dataframes with the exact data we need for each year (there is 2 dataframes
+per year). Once the data was finalized, the remainder of the project had really took off, as all that was left was to createour web app to display the data. 
+The web app was also configured to update weekly when the new NFL week begins.
+
+Our project is a web-based application that allows users to log on and see the given weeks slate of NFL games with its corresponding predection. It will also show past 
+weeks/seasons predictions and actual outcomes. This will allow the user to look back at past matchups to see if we got the prediction right.
+Our project will give users another source of information/predictions to base their personal final prediction off of. There's never enough data available when making picks
+in sports.
+
+We have come a long way, and are getting better results than expected, but there is some more work we plan to pursue on our free time to be done to improve the project.
+In its current state, we are only using a small portion of a pretty big dataset data to decide a result for a game, but I believe some trial and error can be done to 
+add more factors for the model to base its decision off of. Another thing that can be done is creating our own data source instead of the API we had used. This can be 
+through web data scraping, which would allow us to acquire a lot more data to train the model off of. An additional feature to be added would be an "all-time" record tracker
+for the model, for the users to see how many correct predictions it had made.
+
+In all, that is the NFL oracle, it was quite a fun project to work on, as we were both very passionate regarding a subject of sports prediction. We had both learned a lot 
+throughout the development process, and we look forward to growing this project. Thank you.
+
