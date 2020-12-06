@@ -1,0 +1,127 @@
+@import url(//db.onlinewebfonts.com/c/17b2f1ec96bd9046eb5f6de9ce797d0b?family=NFL+RedZone);
+@import url(https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap);
+
+html, body {
+    height: 100%;
+}
+.background-design {
+    background-image: url('../images/football_background.jpg');
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100; /* Just to keep it at the very top */
+}
+
+
+.logo-font { 
+    font-family: NFL RedZone;
+}
+
+.custom-button {
+    font-family: 'Quicksand', sans-serif;
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    border-radius: 10px;
+    border: 2px solid black;
+    width: 200px;
+    height: 30px;
+
+}
+
+.custom-button:hover {
+    background-color: white;
+}
+  
+
+.navbar-design {
+    background-color: transparent;
+    
+}
+
+.links {
+    text-decoration: none;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 100px;
+    font-size: 22px;
+}
+
+.links:hover {
+    text-decoration: none;
+    color:white;
+}
+
+
+
+.game {
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding-top: 10px;
+}
+
+.container-custom {
+    width: 1400px !important;
+}
+
+
+.team_names { 
+    display:inline-block;
+    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.game-details {
+    border-bottom: 1px solid black;
+    
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.predictions {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.week {
+    font-family: 'Quicksand', sans-serif;
+    color:white;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.search-bar-custom {
+    border: 2px solid white;
+    border-radius: 10px 10px 10px 10px;
+    font-size: 18px;
+    padding: 5px;
+    height: 35px;
+    width: 100px;
+    background: transparent;
+    color: white;
+  }
+  
+  .search-bar-custom::placeholder {
+    color: white;
+    text-shadow: 0.3px 0.3px white;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .search-bar-custom-button {
+        color: black;
+        background-color: white !important;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        font-family: 'Quicksand', sans-serif;
+  }

@@ -1,71 +1,74 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    	<meta charset="utf-8">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <title>NFL Game Predictor</title>
-  </head>
-  <div class="topnav">
-    <a href="/2020">2020</a>
-    <a href="/2019">2019</a>
-    <a href="/2018">2018</a>
-    <a href="/2017">2017</a>
-    <a href="/matchups">Matchups</a>
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center">
+      <h1 class="week">Week {{week}}</h1>
+      <form action="{{ url_for(function) }}" method="POST">
+        <fieldset>
+            {% if year == 2020: %}
+            <input class="search-bar-custom" name="week_user_selected" min=1 max={{ week }} type="number" required>
+            {% elif year == 2017: %}
+            <input name="week_user_selected" min=2 max=17 type="number" required>
+            {% else: %}
+            <input name="week_user_selected" min=1 max=17 type="number" required>
+            {%endif%}
+            <input class="search-bar-custom-button" type="submit" value="Find week">
+        </fieldset>
+      </form>
   </div>
-  <body>
-      <h1> Hello World  </h1>
-      <h1>Welcome to NFL Sports Predictor</h1>
-
-     <form action="{{ url_for(function) }}" method="POST">
-	    <fieldset>
-	        <legend>Filters</legend>
-          Week:
-          {% if year == 2020: %}
-          <input name="week_user_selected" min=1 max={{ week }} type="number" required>
-          {% elif year == 2017: %}
-          <input name="week_user_selected" min=2 max=17 type="number" required>
-          {% else: %}
-          <input name="week_user_selected" min=1 max=17 type="number" required>
+  <div class= "games mt-2">
+    <div class="container-custom mx-auto">
+    {% for row in games.itertuples(index=True, name='Pandas'):%}
+        {% if row.Index % 4 == 0: %}
+          {% if row.Index > 0: %}
+            </div>
           {%endif%}
-          <input type="submit" value="Submit">
-	    </fieldset>
-	</form>
-
-      <hr>
-      <div>
-          {% if selected_week: %}
-            <p> Filtered on Week = {{selected_week}} </p>
-          {%endif%}
-     </div>
-      <hr>
-      <div class= "games">
-        <table style = "width:30%">
-            <tr>
-                <th> Week </th>
-                <th> Home Team </th>
-                <th> Away Team </th>
-                <th> Model Predicted Winner </th>
-                <th> Actual Winner </th>
-            </tr>
-            {% for row in games.itertuples(index=True, name='Pandas'):%}
-                <tr>
-                    <td> {{row.Week}}</td>
-                    <td> {{row.HomeTeam}}</td>
-                    <td> {{row.AwayTeam}}</td>
-                    {% if row.PredictHomeTeamWin == 1: %}
-                      <td>{{row.HomeTeam}}</td>
-                    {% else: %}
-                      <td>{{row.AwayTeam}}</td>
-                    {%endif%}
-                    {% if row.HomeResult == 1: %}
-                      <td>{{row.HomeTeam}}</td>
-                    {% else: %}
-                      <td>{{row.AwayTeam}}</td>
-                    {%endif%}
-                </tr>
-            {% endfor %}
-        </table>
+          <div class="row mb-1">
+          <div class="col-sm game">
+        {% else: %}
+          <div class="col-sm game ml-5">
+        {%endif%}
+      
+        <div class="game-details">
+          <img src="../static/images/team_logos/{{row.HomeTeam}}.png" class="ml-1" width="55px" height="55px" alt="team-logo">
+          <img src="../static/images/team_logos/{{row.AwayTeam}}.png" class="float-right mr-2" width="50px" height="50px" alt="team-logo">
+          <br/>
+          <p class="team_names ml-3">{{row.HomeTeam}}</p>
+          <p class="team_names float-right mr-3">{{row.AwayTeam}}</p>
+        </div>
+        <div class="text-center mt-2">
+          <div class="mb-2 predictions">
+            {% if row.PredictHomeTeamWin == 1: %}
+              <span>Predicted Winner: {{row.HomeTeam}}</span>
+              <br/>
+            {% else: %}
+              <span>Predicted Winner: {{row.AwayTeam}}</span>
+              <br/>
+            {%endif%}
+            {% if row.HomeResult == None: %}
+              <span>Actual Winner: TBD</span>
+            {% else: %}
+              {% if row.HomeResult == 1: %}
+                <span>Actual Winner: {{row.HomeTeam}}</span>
+                {% if row.HomeResult == row.PredictHomeTeamWin: %}
+                  <span class="dot" style="background-color: green;"></span>
+                {% else: %}
+                  <span class="dot" style="background-color: red;"></span>
+                {%endif%}
+              {% else: %}
+                <span>Actual Winner: {{row.AwayTeam}}</span>
+                {% if row.HomeResult == row.PredictHomeTeamWin: %}
+                  <span class="dot" style="background-color: green;"></span>
+                {% else: %}
+                  <span class="dot" style="background-color: red;"></span>
+                {%endif%}
+              {%endif%}
+            {%endif%}
+          </div>
+        </div>
+        
       </div>
-  </body>
-</html>
+    {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

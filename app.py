@@ -144,8 +144,6 @@ def update_database():
 
     print('update successful')
 
-def test():
-    print('hello')
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(update_database, 'cron', day_of_week = 'wed', hour='18',  minute='30')
@@ -154,11 +152,17 @@ scheduler.start()
 
 # defualt week 
 default_week = 1
+
+@app.route('/', methods=['GET'])
+def landing_page():
+    return flask.render_template('landing_page.html')
+
+
 # basic landing route
 @app.route('/2020', methods=['GET', 'POST'])
 def twenty_twenty():
 
-    # get the week 
+    # get the week -- change this to get from database
     response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key=d8b5ea01537141eb9a320f95994b7109')
     week = response.json()
 
@@ -176,16 +180,17 @@ def twenty_twenty():
         # load games
         df = pd.read_json(response[0]).T
         return flask.render_template('games_list.html',
-                                     games=df[df.Week == default_week],function="twenty_twenty", year=2020, week=week)
+                                     games=df[df.Week == week].reset_index(),function="twenty_twenty", year=2020, week=week)
 
     if flask.request.method == 'POST':
 
         df = pd.read_json(response[0]).T
         selected_week = flask.request.form['week_user_selected']
-
+        week = df[df.Week == int(selected_week)].reset_index()
         return flask.render_template('games_list.html',
-                                     games=df[df.Week == int(selected_week)],
-                                     selected_week=selected_week,function="twenty_twenty", year=2020, week=week)
+                                     games=week,
+                                     amount=len(week),
+                                     week=selected_week,function="twenty_twenty", year=2020)
 
 # basic landing route
 @app.route('/2019', methods=['GET', 'POST'])
@@ -204,16 +209,17 @@ def twenty_nineteen():
         # load games
         df = pd.read_json(response[0]).T
         return flask.render_template('games_list.html',
-                                     games=df[df.Week == default_week],function="twenty_nineteen",year=2019)
+                                     games=df[df.Week == default_week].reset_index(),function="twenty_nineteen",year=2019, week=1)
 
     if flask.request.method == 'POST':
 
         df = pd.read_json(response[0]).T
         selected_week = flask.request.form['week_user_selected']
-
+        week = df[df.Week == int(selected_week)].reset_index()
         return flask.render_template('games_list.html',function="twenty_nineteen",
-                                     games=df[df.Week == int(selected_week)],
-                                     selected_week=selected_week, year=2019)
+                                     games=week,
+                                     amount=len(week),
+                                     week=selected_week, year=2019)
 
 # basic landing route
 @app.route('/2018', methods=['GET', 'POST'])
@@ -233,16 +239,17 @@ def twenty_eighteen():
         # load games
         df = pd.read_json(response[0]).T
         return flask.render_template('games_list.html',function="twenty_eighteen",
-                                     games=df[df.Week == default_week], year=2018)
+                                     games=df[df.Week == default_week].reset_index(), year=2018, week=1)
 
     if flask.request.method == 'POST':
 
         df = pd.read_json(response[0]).T
         selected_week = flask.request.form['week_user_selected']
-
+        week = df[df.Week == int(selected_week)].reset_index()
         return flask.render_template('games_list.html',function="twenty_eighteen",
-                                     games=df[df.Week == int(selected_week)],
-                                     selected_week=selected_week, year=2018)
+                                     games=week,
+                                     amount=len(week),
+                                     week=selected_week, year=2018)
 
 # basic landing route
 @app.route('/2017', methods=['GET', 'POST'])
@@ -262,16 +269,17 @@ def twenty_seventeen():
         # load games
         df = pd.read_json(response[0]).T
         return flask.render_template('games_list.html',function="twenty_seventeen",
-                                     games=df[df.Week == default_week+1], year=2017)
+                                     games=df[df.Week == default_week+1].reset_index(), year=2017, week=1)
 
     if flask.request.method == 'POST':
 
         df = pd.read_json(response[0]).T
         selected_week = flask.request.form['week_user_selected']
-
+        week = df[df.Week == int(selected_week)].reset_index()
         return flask.render_template('games_list.html',function="twenty_seventeen",
-                                     games=df[df.Week == int(selected_week)],
-                                     selected_week=selected_week, year=2017)
+                                     games=week,
+                                     amount=len(week),
+                                     week=selected_week, year=2017)
 
 @app.route('/matchups', methods=['GET', 'POST'])
 def specific_matchups():
@@ -345,4 +353,4 @@ def specific_matchups():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
