@@ -5,17 +5,17 @@
       <form action="{{ url_for(function) }}" method="POST">
         <fieldset>
             {% if year == 2020: %}
-            <input class="search-bar-custom" name="week_user_selected" min=1 max={{ week }} type="number" required>
+            <input class="search-bar-custom" name="week_user_selected" min=1 max={{week}} type="number" required>
             {% elif year == 2017: %}
-            <input name="week_user_selected" min=2 max=17 type="number" required>
+            <input class="search-bar-custom" name="week_user_selected" min=2 max=17 type="number" required>
             {% else: %}
-            <input name="week_user_selected" min=1 max=17 type="number" required>
+            <input class="search-bar-custom" name="week_user_selected" min=1 max=17 type="number" required>
             {%endif%}
             <input class="search-bar-custom-button" type="submit" value="Find week">
         </fieldset>
       </form>
   </div>
-  <div class= "games mt-2">
+  <div class= "games mt-5">
     <div class="container-custom mx-auto">
     {% for row in games.itertuples(index=True, name='Pandas'):%}
         {% if row.Index % 4 == 0: %}
