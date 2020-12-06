@@ -3,8 +3,10 @@ import os
 import pickle
 import requests
 import psycopg2
+import json
 import pandas as pd
-from pandas import json_normalize
+from github import Github
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 # load in env variables
@@ -13,9 +15,13 @@ db_name = os.environ['HEROKU_DB']
 db_user = os.environ['HEROKU_DB_USER']
 db_password = os.environ['HEROKU_DB_PASSWORD']
 api_key = os.environ['SPORTS_DATA_IO_API']
+api_key_2 = os.environ['SPORTS_DATA_IO_API_2']
+github_token = os.environ['GITHUB_TOKEN']
 
-# set default week
-default_week = 1
+# import model
+with open('./models/nfl_predictor_rf.pkl', 'rb') as f:
+    model = pickle.load(f)
+
 
 # connect to postgres database
 conn = psycopg2.connect(database=db_name, user=db_user, password=db_password, host=db_host, port="5432")
@@ -28,6 +34,126 @@ cur = conn.cursor()
 app = flask.Flask(__name__, template_folder='templates')
 
 
+# define database update
+def update_database():
+    # get both dataframes we need from api
+    response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key={0}'.format(api_key_2))
+    week = response.json()
+
+    # season stats per team
+    response = requests.get('https://api.sportsdata.io/api/nfl/odds/json/ScoresByWeek/2020REG/{0}?key={1}'.format(week, api_key))
+    current_games = pd.DataFrame.from_dict(response.json())
+
+
+
+    # season stats per team
+    response = requests.get('https://api.sportsdata.io/api/nfl/odds/json/TeamSeasonStats/2020REG?key={0}'.format(api_key))
+    team_stats_2020 = pd.DataFrame.from_dict(response.json())
+
+    # bring in the database dataframes
+    # create the SQL string for games data 
+    sql_string = 'SELECT games from games_data where year = 2020'
+    cur.execute(sql_string)
+    db_games_data = cur.fetchone()[0]
+    db_games_data = pd.read_json(db_games_data).T
+
+
+    # create the SQL string for team stats data 
+    sql_string = 'SELECT stats from team_stats where year = 2020'
+    cur.execute(sql_string)
+    db_team_stats = cur.fetchone()[0]
+    db_team_stats = pd.read_json(db_team_stats).T
+
+    # update year team stats
+    for index, row in team_stats_2020.iterrows():
+        db_team_stats.at[index, 'avg_up_to_week_{0}'.format(week)] = row.Score / row.Games
+        db_team_stats.at[index, 'first_downs_up_to_week_{0}'.format(week)] = row.FirstDowns / row.Games
+        db_team_stats.at[index, 'third_down_percentage_up_to_week_{0}'.format(week)] = row.ThirdDownPercentage
+        
+        # convert string time of possession to float
+        top = row.TimeOfPossession.split(':')
+        top = float('{0}.{1}'.format(top[0],top[1]))
+        db_team_stats.at[index, 'time_of_possession_up_to_week_{0}'.format(week)] = top
+        
+        
+        
+    # update database for team stats
+    data = db_team_stats.to_json(orient="index")
+    sql_string = 'UPDATE team_stats SET stats = %s WHERE year = 2020'
+    cur.execute(sql_string, (json.dumps(data),))
+    conn.commit()
+
+    # update this weeks games with stats
+    current_games = current_games[['Week', 'AwayTeam', 'HomeTeam', 'AwayScore', 'HomeScore']]
+
+    db_team_stats = db_team_stats.set_index('Team')
+
+    for index, row in current_games.iterrows():
+        current_games.at[index,'HomeAverage'] = db_team_stats.loc[row.HomeTeam,'avg_up_to_week_{0}'.format(week)]
+        current_games.at[index,'HomeFirstDowns'] = db_team_stats.loc[row.HomeTeam,'first_downs_up_to_week_{0}'.format(week)]
+        current_games.at[index,'HomeTime'] = db_team_stats.loc[row.HomeTeam,'time_of_possession_up_to_week_{0}'.format(week)]
+        current_games.at[index,'HomeThirdDowns'] = db_team_stats.loc[row.HomeTeam,'third_down_percentage_up_to_week_{0}'.format(week)]
+
+        # team 2 stats
+        current_games.at[index,'AwayAverage'] = db_team_stats.loc[row.AwayTeam,'avg_up_to_week_{0}'.format(week)]
+        current_games.at[index,'AwayFirstDowns'] = db_team_stats.loc[row.AwayTeam,'first_downs_up_to_week_{0}'.format(week)]
+        current_games.at[index,'AwayTime'] = db_team_stats.loc[row.AwayTeam,'time_of_possession_up_to_week_{0}'.format(week)]
+        current_games.at[index,'AwayThirdDowns'] = db_team_stats.loc[row.AwayTeam,'third_down_percentage_up_to_week_{0}'.format(week)]
+
+    # let model make predictions on this weeks games
+    selected_features = ['AwayAverage','AwayFirstDowns', 'AwayTime', 'AwayThirdDowns', 'HomeAverage','HomeFirstDowns', 'HomeTime', 'HomeThirdDowns']
+    # get values we want
+    values = current_games[selected_features].values
+
+    # make predictions
+    predictions = model.predict(values)
+
+    for index, row in current_games.iterrows():
+        current_games.at[index, 'PredictHomeTeamWin'] = predictions[index]
+        
+    # fill scores as games arent played yet
+    current_games = current_games.fillna(-1)
+        
+    # append to all games
+    db_games_data = db_games_data.append(current_games, ignore_index=True)
+
+    db_games_data.to_csv('./custom_games_by_season/2020_data.csv', header=True,  encoding='utf-8', index=False) 
+
+
+    # update database for season games
+    data = db_games_data.to_json(orient="index")
+    sql_string = 'UPDATE games_data SET games = %s WHERE year = 2020'
+    cur.execute(sql_string, (json.dumps(data),))
+    conn.commit()
+
+    # write csv to github for the sake of it
+    g = Github(github_token)
+
+    # get csv 
+    with open('./custom_games_by_season/2020_data.csv', newline='') as csvfile:
+        data = csvfile.read()
+
+
+
+    # get project and update file
+    repo = g.get_repo('Sports-Outcome-Analyzer/nfl_sports_analyzer')
+
+    contents = repo.get_contents("custom_games_by_season/2020_data.csv", ref="development")
+
+    repo.update_file(contents.path, "update csv file with new games", data, contents.sha, branch="development")
+
+    print('update successful')
+
+def test():
+    print('hello')
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(update_database, 'cron', day_of_week = 'wed', hour='18',  minute='30')
+scheduler.start()
+
+
+# defualt week 
+default_week = 1
 # basic landing route
 @app.route('/2020', methods=['GET', 'POST'])
 def twenty_twenty():
@@ -219,4 +345,4 @@ def specific_matchups():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
