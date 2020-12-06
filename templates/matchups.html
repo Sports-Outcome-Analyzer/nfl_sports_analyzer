@@ -1,21 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
-  <form action="{{ url_for('specific_matchups') }}" method="POST">
-    <fieldset>
-          <select name="team_user_selected_1">
-              {% for _, row in teams.items():%}
-                  <option value={{row}}>{{row}}</option>
-              {% endfor %}
-          </select>
-          <select name="team_user_selected_2">
-              {% for _, row in teams.items():%}
-                  <option value={{row}}>{{row}}</option>
-              {% endfor %}
-          </select>
-          <input type="submit" value="Submit">
-    </fieldset>
-  </form>
+  <div class="text-center" style="margin-top: 150px;">
+    <form action="{{ url_for('specific_matchups') }}" method="POST">
+      <fieldset>
+            <select class="custom-selects" name="team_user_selected_1">
+                {% for _, row in teams.items():%}
+                    <option value={{row}}>{{row}}</option>
+                {% endfor %}
+            </select>
+            <select class="custom-selects ml-3" name="team_user_selected_2">
+                {% for _, row in teams.items():%}
+                    <option  value={{row}}>{{row}}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <input type="submit" class="search-bar-custom-button mt-3" style="width: 300px" value="Find winner of this matchup">
+      </fieldset>
+    </form>
+  </div>
   {% if predicted_winner != "": %}
-      <h4> Predicted Winner of a potential {{home_team}} vs {{away_team}} matchup: {{predicted_winner}}  </h4>
+    <div class= "game mx-auto mt-5" style="width: 400px;">
+      <div class="game-details">
+        <img src="../static/images/team_logos/{{home_team}}.png" class="ml-1" width="55px" height="55px" alt="team-logo">
+        <img src="../static/images/team_logos/{{away_team}}.png" class="float-right mr-2" width="50px" height="50px" alt="team-logo">
+        <br/>
+        <p class="team_names ml-3">{{home_team}}</p>
+        <p class="team_names float-right mr-3">{{away_team}}</p>
+      </div>
+      <div class="text-center mt-2">
+        <div class="mb-2 predictions">
+            <span>Predicted Winner of this matchup: {{predicted_winner}} </span>
+        </div>
+      </div>
+    </div>
   {%endif%}
+
 {% endblock %}
