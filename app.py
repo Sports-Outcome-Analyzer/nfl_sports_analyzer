@@ -5,7 +5,6 @@ import requests
 import psycopg2
 import json
 import pandas as pd
-from github import Github
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
