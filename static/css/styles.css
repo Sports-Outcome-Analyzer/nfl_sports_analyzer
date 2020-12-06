@@ -1,6 +1,10 @@
-@import url(https://db.onlinewebfonts.com/c/17b2f1ec96bd9046eb5f6de9ce797d0b?family=NFL+RedZone);
 @import url(https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap);
-
+@font-face {font-family: "NFL RedZone"; src: url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.eot"); 
+    src: url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.eot?#iefix") format("embedded-opentype"), 
+    url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.woff2") format("woff2"), 
+    url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.woff") format("woff"), 
+    url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.ttf") format("truetype"), 
+    url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.svg#NFL RedZone") format("svg"); }
 html, body {
     height: 100%;
 }
@@ -16,7 +20,7 @@ html, body {
 
 
 .logo-font { 
-    font-family: 'NFL RedZone';
+    font-family: "NFL RedZone";
 
 }
 
