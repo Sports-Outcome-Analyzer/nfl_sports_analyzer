@@ -4,3 +4,5 @@ requests
 pandas
 psycopg2
 sklearn
+apscheduler
+PyGithub
