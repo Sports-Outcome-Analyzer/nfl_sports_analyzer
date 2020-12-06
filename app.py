@@ -16,7 +16,6 @@ db_user = os.environ['HEROKU_DB_USER']
 db_password = os.environ['HEROKU_DB_PASSWORD']
 api_key = os.environ['SPORTS_DATA_IO_API']
 api_key_2 = os.environ['SPORTS_DATA_IO_API_2']
-github_token = os.environ['GITHUB_TOKEN']
 
 # import model
 with open('./models/nfl_predictor_rf.pkl', 'rb') as f:
@@ -125,22 +124,6 @@ def update_database():
     sql_string = 'UPDATE games_data SET games = %s WHERE year = 2020'
     cur.execute(sql_string, (json.dumps(data),))
     conn.commit()
-
-    # write csv to github for the sake of it
-    g = Github(github_token)
-
-    # get csv 
-    with open('./custom_games_by_season/2020_data.csv', newline='') as csvfile:
-        data = csvfile.read()
-
-
-
-    # get project and update file
-    repo = g.get_repo('Sports-Outcome-Analyzer/nfl_sports_analyzer')
-
-    contents = repo.get_contents("custom_games_by_season/2020_data.csv", ref="development")
-
-    repo.update_file(contents.path, "update csv file with new games", data, contents.sha, branch="development")
 
     print('update successful')
 
