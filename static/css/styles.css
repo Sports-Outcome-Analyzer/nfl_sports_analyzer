@@ -146,3 +146,12 @@ html, body {
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
   }
+
+
+  .error {
+    font-family: 'Quicksand', sans-serif;
+    color: black;
+    text-align: center;
+    margin-top: 50px;
+
+  }

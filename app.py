@@ -292,13 +292,16 @@ def specific_matchups():
 
     # load page
     if flask.request.method == 'GET':
-        return flask.render_template('matchups.html', teams=teams, predicted_winner=predicted_winner)
+        return flask.render_template('matchups.html', teams=teams, predicted_winner=predicted_winner, error=False)
 
     if flask.request.method == 'POST':
         # get inputs
         home_team = flask.request.form['team_user_selected_1']
         away_team = flask.request.form['team_user_selected_2']
         
+        if home_team == away_team:
+            return flask.render_template('matchups.html', teams=teams, predicted_winner="no winner", home_team=home_team, away_team=away_team, error=True)
+
 
 
         # create custom df
@@ -329,7 +332,7 @@ def specific_matchups():
         else:
             predicted_winner=away_team
 
-        return flask.render_template('matchups.html', teams=teams, predicted_winner=predicted_winner, home_team=home_team, away_team=away_team)
+        return flask.render_template('matchups.html', teams=teams, predicted_winner=predicted_winner, home_team=home_team, away_team=away_team, error=False)
 
 
 
