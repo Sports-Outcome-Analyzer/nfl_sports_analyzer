@@ -10,10 +10,11 @@ html, body {
 }
 .background-design {
     background-image: url('../images/football_background.jpg');
-    width: 100%;
-    height: 100%;
-    position: fixed;
+    overflow: visible;
     top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-repeat: repeat-y;
     left: 0;
     z-index: 100; /* Just to keep it at the very top */
 }
@@ -72,7 +73,7 @@ html, body {
 }
 
 .container-custom {
-    width: 1400px !important;
+    width: 1050px !important;
 }
 
 
