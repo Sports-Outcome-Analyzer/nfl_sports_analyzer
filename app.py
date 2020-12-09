@@ -128,7 +128,7 @@ def update_database():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(update_database, 'cron', day_of_week = 'wed', hour='18',  minute='30')
+scheduler.add_job(update_database, 'cron', day_of_week = 'thu', hour='7',  minute='30')
 scheduler.start()
 
 
