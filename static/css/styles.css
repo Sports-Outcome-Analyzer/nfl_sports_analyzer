@@ -5,9 +5,7 @@
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.woff") format("woff"), 
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.ttf") format("truetype"), 
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.svg#NFL RedZone") format("svg"); }
-html, body {
-    height: 100%;
-}
+
 .background-design {
     background-image: url('../images/football_background.jpg');
     overflow: visible;
