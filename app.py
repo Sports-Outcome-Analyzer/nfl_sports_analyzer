@@ -140,6 +140,10 @@ def landing_page():
     return flask.render_template('landing_page.html')
 
 
+@app.route('/contact', methods=['GET'])
+def contact_pages():
+    return flask.render_template('contact.html')
+
 # basic landing route
 @app.route('/2020', methods=['GET', 'POST'])
 def twenty_twenty():
@@ -338,4 +342,6 @@ def specific_matchups():
 
 
 if __name__ == '__main__':
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.run(debug=True)
