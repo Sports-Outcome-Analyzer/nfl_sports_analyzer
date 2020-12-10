@@ -5,19 +5,32 @@
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.woff") format("woff"), 
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.ttf") format("truetype"), 
     url("//db.onlinewebfonts.com/t/17b2f1ec96bd9046eb5f6de9ce797d0b.svg#NFL RedZone") format("svg"); }
-html, body {
+body,html {
     height: 100%;
 }
 .background-design {
     background-image: url('../images/football_background.jpg');
-    width: 100%;
-    height: 100%;
-    position: fixed;
+    overflow: visible;
     top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-repeat: repeat-y;
+    background-position-x: center;
     left: 0;
     z-index: 100; /* Just to keep it at the very top */
 }
 
+.background-design-landing {
+    background-image: url('../images/football_background.jpg');
+    overflow: visible;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background-repeat: repeat-y;
+    background-position-x: center;
+    left: 0;
+    z-index: 100; /* Just to keep it at the very top */
+}
 
 .logo-font { 
     font-family: "NFL RedZone";
@@ -72,7 +85,7 @@ html, body {
 }
 
 .container-custom {
-    width: 1400px !important;
+    width: 1050px !important;
 }
 
 
@@ -145,4 +158,13 @@ html, body {
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+  }
+
+
+  .error {
+    font-family: 'Quicksand', sans-serif;
+    color: black;
+    text-align: center;
+    margin-top: 50px;
+
   }

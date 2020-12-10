@@ -18,14 +18,14 @@
   <div class= "games mt-5">
     <div class="container-custom mx-auto">
     {% for row in games.itertuples(index=True, name='Pandas'):%}
-        {% if row.Index % 4 == 0: %}
+        {% if row.Index % 3 == 0: %}
           {% if row.Index > 0: %}
             </div>
           {%endif%}
-          <div class="row mb-1">
-          <div class="col-sm game">
+          <div class="row">
+          <div class="col-sm game mb-5">
         {% else: %}
-          <div class="col-sm game ml-5">
+          <div class="col-sm game ml-5 mb-5">
         {%endif%}
       
         <div class="game-details">
@@ -35,7 +35,7 @@
           <p class="team_names ml-3">{{row.HomeTeam}}</p>
           <p class="team_names float-right mr-3">{{row.AwayTeam}}</p>
         </div>
-        <div class="text-center mt-2">
+        <div class="text-center mt-5">
           <div class="mb-2 predictions">
             {% if row.PredictHomeTeamWin == 1: %}
               <span>Predicted Winner: {{row.HomeTeam}}</span>

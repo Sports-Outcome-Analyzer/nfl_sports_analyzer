@@ -19,6 +19,9 @@
     </form>
   </div>
   {% if predicted_winner != "": %}
+    {% if error == True: %}
+      <h2 class="error">Please enter 2 different teams</h2>
+    {% else: %}
     <div class= "game mx-auto mt-5" style="width: 400px;">
       <div class="game-details">
         <img src="../static/images/team_logos/{{home_team}}.png" class="ml-1" width="55px" height="55px" alt="team-logo">
@@ -33,6 +36,8 @@
         </div>
       </div>
     </div>
+    {%endif%}
   {%endif%}
+
 
 {% endblock %}
