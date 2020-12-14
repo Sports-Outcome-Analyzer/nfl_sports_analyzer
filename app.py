@@ -270,14 +270,14 @@ def twenty_seventeen():
 @app.route('/matchups', methods=['GET', 'POST'])
 def specific_matchups():
     # get a list of teams
-    response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/Teams/2020?key=d8b5ea01537141eb9a320f95994b7109')
+    response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/Teams/2020?key=152276092f6d485086221429787e75a8')
     # put in dataframe
     teams = pd.DataFrame.from_dict(response.json())
     teams= teams['Key'] # just get abbreviations
 
     # get the week 
-    response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key=d8b5ea01537141eb9a320f95994b7109')
-    week = response.json()
+    # response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key=d8b5ea01537141eb9a320f95994b7109')
+    week = 14
 
 
     # load up the model
