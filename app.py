@@ -126,10 +126,10 @@ def update_database():
 
     print('update successful')
 
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(update_database, 'cron', day_of_week = 'thu', hour='7',  minute='30')
-scheduler.start()
+# get rid of scheduler because apis suck
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(update_database, 'cron', day_of_week = 'thu', hour='7',  minute='30')
+# scheduler.start()
 
 
 # defualt week 
@@ -149,9 +149,9 @@ def contact_pages():
 def twenty_twenty():
 
     # get the week -- change this to get from database
-    response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key=d8b5ea01537141eb9a320f95994b7109')
-    week = response.json()
-
+    # response = requests.get('https://api.sportsdata.io/v3/nfl/scores/json/CurrentWeek?key=d8b5ea01537141eb9a320f95994b7109')
+    # week = response.json()
+    week = 14 # hardcode for now because i ran out of api
     # fetch data
     sql_string = 'select games from games_data where year = 2020'
     cur.execute(sql_string)
